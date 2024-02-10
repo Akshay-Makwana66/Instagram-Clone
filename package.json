@@ -1,0 +1,30 @@
+{
+  "name": "instagram-clone",
+  "version": "1.0.0",
+  "description": "Create Restful API for the given features\r Features to be implemented\r # User registration\r a) name,\r b) user_id(auto increment integer number),\r c) Password (minimum 8 character, first char capital, alphanumeric, use of\r special char)\r d) email_id(unique, validation for proper email format)\r e) User_name (unique)\r f) Gender (male/female/other)\r g) Mobile (mobile number validation, with country code)\r h) Profile will be public / private (bonus)\r # User Login\r a) User can login with his created credentials and make use of JWT token for\r verification for all furter interaction by user\r # User can upload their post\r a) Post can contain\r i) Text\r ii) Images And videos at same time or any one\r b) Public / private status of post\r c) Hashtag (bonus)\r d) Friend tag (bonus)\r e) Comment(bonus)\r i) Sub-comment (bonus)\r #  Users can follow and unfollow other users.\r #  User can also like post, delete own post\r a) User can only like post one time only\r #  We(user) can block any other user, means we cannot see his post/profile and he\r can’t see our post/profile (bonus)\r #  Profile api\r 1. profile details\r 2. follower count\r 3. following count\r 4. get list of all users who liked my post (hint: use aggregation)\r 5. post count\r #  Explore APIs (hint: use aggregation)\r 1. List only public post with Get latest uploaded post(like instagram feeds)\r a. Add extra field in reply is the current user liked this post or not\r 2. Get every time random post (extra bonus)\r 3. Not getting blocked user post (bonus)\r 4. Pagination show 10 post per page\r 5. List down the post which is liked by me (user) only\r 6. My own post should not be listed in this api.\r #  Edit profile\r #  Edit post\r #  Delete post (soft delete)\r #  Unblock user (bonus)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "npx nodemon src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Akshay-Makwana66/Instagram-Clone.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Akshay-Makwana66/Instagram-Clone/issues"
+  },
+  "homepage": "https://github.com/Akshay-Makwana66/Instagram-Clone#readme",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "dotenv": "^16.3.2",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.1.0",
+    "multer": "^1.4.5-lts.1",
+    "nodemailer": "^6.9.8",
+    "nodemon": "^3.0.3"
+  }
+}

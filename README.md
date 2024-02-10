@@ -1,7 +1,7 @@
 # Instagram-Clone
 Create Restful API for the given features
 Features to be implemented
-# User registration
+# User registration---
 a) name,
 b) user_id(auto increment integer number),
 c) Password (minimum 8 character, first char capital, alphanumeric, use of
@@ -37,7 +37,7 @@ can’t see our post/profile (bonus)
 #  Explore APIs (hint: use aggregation)
 1. List only public post with Get latest uploaded post(like instagram feeds)
 a. Add extra field in reply is the current user liked this post or not
-2. Get every time random post (extra bonus)
+2. Get every time random post (extra bonus) //ye ho gya
 3. Not getting blocked user post (bonus)
 4. Pagination show 10 post per page
 5. List down the post which is liked by me (user) only
