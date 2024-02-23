@@ -8,21 +8,22 @@ const userPostSchema = new mongoose.Schema({
         ref:"UserRegistration",
     },
     text:{
-        type: String,
-        // required: true
+        type: String
     },
-    // imageVideo: {
-    //    type: String,
-    //    required: true 
-    //   },
+    images: {
+      type: [String], // Array of strings to store multiple image paths
+      default: []
+  },
+  videos: {
+    type: [String], // Array of strings to store multiple image paths
+    default: []
+},
     postStatus:{
         type: String,
         enum:["Public", "Private"],
         default: "Public"
     },
-    hashtagText:{
-        type:String
-    },
+   
     likes:{
         type: Number,
         default:0
@@ -36,6 +37,10 @@ const userPostSchema = new mongoose.Schema({
         type: ObjectId,
         ref: 'UserRegistration',
       }],
+    commentCount:{
+        type: Number,
+        default:0
+    },
     comments: [{
         user: {
           type: ObjectId,
@@ -56,6 +61,16 @@ const userPostSchema = new mongoose.Schema({
         },
         }],
       }],  
+      postTime: {
+        type: Date,
+        default: () => {
+            // Get current UTC time
+            const utcTime = new Date();
+            // Adjust UTC time to IST (+5 hours and 30 minutes)
+            const istTime = new Date(utcTime.getTime() + (5.5 * 60 * 60 * 1000));
+            return istTime;
+        }
+    },
     isDeleted:{
         type: Boolean,   
         default: false

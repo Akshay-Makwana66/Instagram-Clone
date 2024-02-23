@@ -1,8 +1,10 @@
-
+require("dotenv").config()
 const jwt = require("jsonwebtoken");
 const userModel = require("../models/registrationModel");
+const mongoose = require("mongoose");
 
 /**********************************************AUTHENTICATION*******************************************/
+
 const Authentication = function (req, res, next) {
   try {
     if(!req.headers.authorization) {
@@ -20,7 +22,7 @@ const Authentication = function (req, res, next) {
       return res.status(401).send({ status: false, message: "Session expired! Please login again " })
     }
     
-    jwt.verify(token, 'insta-clone', function (err, decoded) {
+    jwt.verify(token, process.env.SECRET_KEY, function (err, decoded) {
       if (err) {
         return res.status(401).send({ status: false, message: "Invalid Token" });
       }
@@ -36,23 +38,4 @@ const Authentication = function (req, res, next) {
   }
 };
 
-
-
-/**********************************************AUTHORIZATION*******************************************/
-
-const Authorization = async (req,res,next) =>{
-
-  let userId = req.params.userId
- 
-  if(!validator.isValidObjectId(userId)) return res.status(404).send({status: false,message: "User Id not valid"})
-
-  let user = await userModel.findById({_id:userId})
-  if(!user)  return res.status(404).send({status: false,message: "User Id not found"})
- 
-  if(user._id.toString()!==req.userId){
-    return res.status(403).send({status: false,message: "Unauthorized access! User's info doesn't match"})
-  }
-  next();   
-}
-
-module.exports = {Authentication,Authorization}
+module.exports = {Authentication}

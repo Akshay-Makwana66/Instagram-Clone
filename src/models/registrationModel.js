@@ -2,6 +2,9 @@ const mongoose = require('mongoose');
 const ObjectId = mongoose.Schema.Types.ObjectId;
 
 const userRegistrationSchema = new mongoose.Schema({
+    profileImage:{
+        type: String,
+    },
     name:{
         type : String,
         required: true
@@ -16,18 +19,20 @@ const userRegistrationSchema = new mongoose.Schema({
     },
     userName:{                
         type : String,
-        required: true
+        required: true,
+        unique:true
     },
     gender:{
         type: String,
         enum:["Male", "Female", "Other"],
+        required:true
     },
     mobile:{
         type: Number,
         required: true,
         unique: true
     },
-    profile:{
+    profileStatus:{
         type: String,
         enum:["Public", "Private"],
         default: "Public"
@@ -45,22 +50,62 @@ const userRegistrationSchema = new mongoose.Schema({
         type: Number,
         default:0
     },
-    following: [{
+    followingTo: [{
         type: ObjectId,
         ref: 'UserRegistration',
     }],
-    // blockerdUserCount:{
-    //     type: Number,
-    //     default:0
-    // },
+    sharedBy: [{
+        user:{
+            type: ObjectId,
+            ref: 'UserRegistration'
+        },
+        post:{
+            type:ObjectId,
+            ref:'UserPost'
+        }
+    }],
+    sharedTo: [{
+        user:{
+            type: ObjectId,
+            ref: 'UserRegistration'
+        },
+        post:{
+            type:ObjectId,
+            ref:'UserPost'
+        }  
+    }],
+    blockedUserCount:{
+        type: Number,
+        default:0
+    },
     blockedUser: [{
         type: ObjectId,
         ref: 'UserRegistration',
     }],
-    is_varified:{
-        type:Number,
-        default:0
-    }
+    email_verified:{
+        type:Boolean,
+        default:false
+    },
+    isLogout:{
+        type: Boolean,   
+        default: false
+    },
+    isDeactivated: {
+        type: Boolean,
+        default: false
+    },
+    deactivationEndDate: {
+        type: Date,
+        default: null
+    },
+    isDeleted:{
+        type: Boolean,   
+        default: false
+    },
+    deletedAt: { 
+      type: Date,
+      default: null }
+
 }, {timestamps:true})
 
 module.exports = mongoose.model('UserRegistration', userRegistrationSchema)
