@@ -17,6 +17,22 @@ const profileDetails = async(req,res)=>{
     }
 };
 
+const searching = async (req, res) => {
+    try {
+        let findName = req.params.name;
+        let searchingByName = await userModel.find({ name: { $regex: findName, $options: 'i' } })
+            .select({ name: 1, userName: 1 });
+
+        if (searchingByName.length === 0) {
+            return res.status(404).send({ status: false, message: "No user profile found with this name" });
+        }
+        
+        return res.status(200).send({ status: true, message: "Searched name list", searchingName: searchingByName });
+    } catch (err) {
+        return res.status(500).send({ status: false, message: err.message });
+    }
+};
+
 const otherUserProfileDetails = async (req, res) => {
     try {
         let userId = req.params.userId;
@@ -214,20 +230,6 @@ const getFollowing = async(req,res)=>{
     }
 };
 
-const postCount = async(req,res)=>{
-    try{
-        
-        let getPostCount = await userPostModel.find({userId:req.userId,isLogout:false}).countDocuments();
-        if(!getPostCount){
-            return res.status(404).send({status:false,message:"you have no post"})
-        } 
-            return res.status(200).send({status:true,message:"your postCount",data:getPostCount})
-         
-    }catch(err){
-        return res.status(500).send({status:false,message:err.message})
-    }
-};
-
 const blockedUser = async(req,res)=>{
     try{
         let userId = req.params.userId;
@@ -321,4 +323,4 @@ const deleteAccount = async(req,res)=>{
        return res.status(500).send({status:false,message:err.message});
     }
 }
-module.exports= {profileDetails,otherUserProfileDetails,followerCount,getFollower,getFollowing,postCount,editProfile,blockedUser,logout,deactivateAccount,activateAccount,deleteAccount};
+module.exports= {profileDetails,searching,otherUserProfileDetails,followerCount,getFollower,getFollowing,editProfile,blockedUser,logout,deactivateAccount,activateAccount,deleteAccount};

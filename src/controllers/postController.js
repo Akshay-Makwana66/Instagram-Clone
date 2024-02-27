@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 const postModel = require("../models/userPostModel");
+const userModel = require("../models/registrationModel");
+const storyModel = require("../models/storyModel");
 
 const userPost = async (req, res) => {
     try {
@@ -36,6 +38,52 @@ const userGetPost = async (req, res) => {
         res.status(500).send({ status: false, message: `Sorry for the inconvenience caused`, msg: err.message });
     }
 };
+
+const suggestions = async (req, res) => {
+    try {
+        let suggestionsUserProfile = await userModel.aggregate([
+            { $sample: { size: 2 } },
+            { $project: { name: 1, userName: 1 } } // Projection to include only 'name' and 'userName'
+        ]);
+        
+        if (suggestionsUserProfile.length === 0) {
+            return res.status(404).send({ status: false, message: "No user profile for suggestions" });
+        }
+        
+        return res.status(200).send({ status: true, message: "Suggestions", suggestions: suggestionsUserProfile });
+    } catch (err) {
+        return res.status(500).send({ status: false, message: err.message });
+    }
+};
+
+// const suggestedUserIds = [];
+
+// const suggestions = async (req, res) => {
+//     try {
+//         const totalNumberOfUsers = await userModel.countDocuments(); // Get the total number of users
+        
+//         let suggestionsUserProfile = await userModel.aggregate([
+//             { $match: { _id: { $nin: suggestedUserIds } } }, // Exclude previously suggested users
+//             { $sample: { size: 2 } },
+//             { $project: { name: 1, userName: 1 } } // Projection to include only 'name' and 'userName'
+//         ]);
+        
+//         if (suggestionsUserProfile.length === 0) {
+//             return res.status(404).send({ status: false, message: "No user profile for suggestions" });
+//         }
+        
+//         suggestedUserIds.push(suggestionsUserProfile[0]._id); // Add the suggested user's ID to the list
+        
+//         // If all users have been suggested, reset the list to suggest from the beginning
+//         if (suggestedUserIds.length === totalNumberOfUsers) {
+//             suggestedUserIds = [];
+//         }
+        
+//         return res.status(200).send({ status: true, message: "Suggestions", suggestions: suggestionsUserProfile });
+//     } catch (err) {
+//         return res.status(500).send({ status: false, message: err.message });
+//     }
+// };
  
 const getAllPost = async (req, res) => { 
     try {
@@ -70,6 +118,20 @@ const randomPost = async (req,res)=>{
 
     } catch (err) {
         res.status(500).send({ status: false, message: `Sorry for the inconvenience caused`, msg: err.message })
+    }
+};
+
+const postCount = async(req,res)=>{
+    try{
+        
+        let getPostCount = await userPostModel.find({userId:req.userId,isLogout:false}).countDocuments();
+        if(!getPostCount){
+            return res.status(404).send({status:false,message:"you have no post"})
+        } 
+            return res.status(200).send({status:true,message:"your postCount",data:getPostCount})
+         
+    }catch(err){
+        return res.status(500).send({status:false,message:err.message})
     }
 };
 
@@ -161,4 +223,5 @@ const deleteUserPost = async (req,res)=>{
                 return res.status(500).send({ status: false, message: `Sorry for the inconvenience caused`, msg: err.message });
                 }
 };
-module.exports={userPost,userGetPost,getAllPost,editPost,randomPost,likesPost,getListOfUsersLikedPost,deleteUserPost};
+
+module.exports={userPost,userGetPost,suggestions,getAllPost,postCount,editPost,randomPost,likesPost,getListOfUsersLikedPost,deleteUserPost};
