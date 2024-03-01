@@ -25,7 +25,8 @@ const  {Authentication} = require("../middleware/auth");
 const { registrationValidations,profileUpdateValidations } = require("../middleware/registrationValidations.js");
 const { postValidations, commentValidations } = require("../middleware/postValidations.js");
 const {sharedPost,removeSharedPost} = require("../controllers/sharedPost.js");
-const {postStories, viewStories,deleteStories} = require("../controllers/postStoriesController.js")
+const {postStories, viewStories,viewer,deleteStories} = require("../controllers/postStoriesController.js");
+
 //User  Api's----------------4
 router.post("/registration",upload.fields([{ name: 'profileImage', maxCount: 5 }]),registrationValidations,userRegistration);
 router.get("/verify",verifyEmail);  
@@ -75,9 +76,10 @@ router.post("/post/:postId/comments/:commentId/subComments",Authentication,comme
 router.patch("/post/:postId/updateSubComment/:subcommentId",Authentication,commentValidations,updateSubCommentOnPost);
 router.delete("/post/:postId/subcomments/:subcommentId",Authentication,deleteSubCommentOnPost); 
 
-// User Stories api's------------5
-router.post("/postStories",Authentication,upload.fields([{ name: 'stories', maxCount: 6 }]),postStories);
+// User Stories api's------------4
+router.post("/postStories",Authentication,upload.fields([{ name: 'content', maxCount: 6 }]),postStories);
 router.get("/viewStories/:storyId",Authentication,viewStories);
+router.get("/viewBy/:storyId",Authentication,viewer);
 router.delete("/deleteStories/:storyId",Authentication,deleteStories)
 
 
@@ -88,4 +90,4 @@ router.all('/**',(req,res)=>{
 
 module.exports=router;  
 
-// overall 37 api's in this project--------------
+// overall 41 api's in this project--------------

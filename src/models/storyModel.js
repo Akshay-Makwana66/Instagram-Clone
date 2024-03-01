@@ -1,46 +1,30 @@
-// Import necessary modules
 const mongoose = require('mongoose');
-const ObjectId = mongoose.Schema.Types.ObjectId;
+const { Schema } = mongoose;
 
-// Define the schema for the story
-const storySchema = new mongoose.Schema({
-    stories: [{
-        user: {
-            type: ObjectId,
-            ref: 'UserRegistration'
-        },
-        stories: {
-            type: [String],
-            default: []
-        },
-        // expiresAt: {
-        //     type: Date,
-        //     default: function() {
-        //         // Calculate IST offset in milliseconds
-        //         const istOffset = 5.5 * 60 * 60 * 1000; // IST offset in milliseconds
-
-        //         // Calculate expiration time 60 seconds from now in IST
-        //         const expirationTime = new Date(Date.now() + (60 * 1000) + istOffset);
-
-        //         return expirationTime;
-        //     }
-        // },
-        expiresAt: {
-            type: Date,
-            default: () => Date.now() + 60 * 1000 // 24 hours from creation
-        },
-    
-        viewers: [{
-            viewersCount: {
-                type: Number,
-                default: 0
-            },
-            viewBy: {
-                type: ObjectId,
-                ref: 'UserRegistration'
-            }
-        }]
+const storySchema = new Schema({ 
+    user: {
+        type: Schema.Types.ObjectId,
+        ref: 'UserRegistration'
+    },   
+    content: [{
+        type: String,
+        required: true
     }],
+    viewers: [{
+        _id: false, // Specify _id to be false to avoid generating additional _id field
+        user:{
+            type: Schema.Types.ObjectId,
+            ref: 'UserRegistration'
+        }
+    }],
+    viewersCount: {
+        type: Number,
+        default: 0
+    },
+    expiresAt: {
+        type: Date,
+        default: () => Date.now() + 60 * 60 * 1000 // 24 hours from creation
+    },
     isDeleted: {
         type: Boolean,
         default: false
@@ -51,9 +35,7 @@ const storySchema = new mongoose.Schema({
     }
 }, { timestamps: true });
 
+// Index for expiration
+storySchema.index({ expiresAt: 1 }, { expireAfterSeconds: 0 });
 
-// Define TTL index on expiresAt field inside each story object
-storySchema.index({"stories.expiresAt": 1 }, { expireAfterSeconds: 0 });
-
-// Create and export the Story model
 module.exports = mongoose.model('Story', storySchema);
