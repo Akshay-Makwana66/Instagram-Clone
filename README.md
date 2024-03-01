@@ -59,8 +59,4 @@ e) Sub-Comment
 12. User can delete their account(soft delete).
 13. user get suggestions to follow other user.
 14. Create searching api to find user by name.
-    user can post stories and after 24hour later it will remove. and post would be 30 or 60 seconds b/w.
-User get notifications when their follower or following create a post, likes, comments  on their own post or a other User's tag(him/her).
-
-ek kaam ye bhi kerna hai ki jab user apna account agar delete kerta hai to usne jisko bhi follow kiya hai vha se remove bhi kerna hai.
-main yha chahta hu ki video ki length 60 seconds se jyada nahi honi chahiye ---ye waala point baaki hai abhi kerna poststories main
+15. User can post stories and after 24 hour later it will remove.
