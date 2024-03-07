@@ -20,7 +20,7 @@ const userPostSchema = new mongoose.Schema({
 },
     postStatus:{
         type: String,
-        enum:["Public", "Private"],
+        enum:["Public", "Private"],  
         default: "Public"
     },
    

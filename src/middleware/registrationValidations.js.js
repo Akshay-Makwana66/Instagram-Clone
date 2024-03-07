@@ -31,8 +31,8 @@ const registrationValidations = async function (req, res, next) {
     // Checks whether username is empty or is enter as a string or contains only letters,numbers,symbols and space
     if (!userName) return res.status(400).send({ status: false, message: "Please enter username" });
     if (typeof userName !== "string") return res.status(400).send({ status: false, message: "Please enter username as a String" });
-    let validuserName = /^[a-zA-Z0-9\s\p{P}]+$/;      
-    if (!validuserName.test(userName)) return res.status(400).send({ status: false, message: "The username may contain only letters,numbers,symbols,space" });
+    let validUserName = /^[a-zA-Z0-9_\s\p{P}]+$/u;          
+    if (!validUserName.test(userName)) return res.status(400).send({ status: false, message: "The username may contain only letters,numbers,symbols,space" });
     let duplicateUserName = await userModel.findOne({ userName: userName });
     if (duplicateUserName !== null && duplicateUserName.length !== 0) return res.status(400).send({ status: false, message: `This userName is ${userName} already exists` });
 

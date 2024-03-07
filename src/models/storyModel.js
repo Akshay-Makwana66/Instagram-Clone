@@ -6,10 +6,10 @@ const storySchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'UserRegistration'
     },   
-    content: [{
+    content: {
         type: String,
         required: true
-    }],
+    },
     viewers: [{
         _id: false, // Specify _id to be false to avoid generating additional _id field
         user:{

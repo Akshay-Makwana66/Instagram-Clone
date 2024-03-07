@@ -11,6 +11,28 @@ const userPost = async (req, res) => {
             let images = req.files['images'] ? req.files['images'].map(file => file.filename.replace('uploads\\', '')) : [];
             let videos = req.files['videos'] ? req.files['videos'].map(file => file.filename.replace('uploads\\', '')) : [];
 
+            // Check if the fields are present in the request
+            if (!images.length && !videos.length) {
+                return res.status(400).send({ status: false, message: "Images or videos field is required." });
+            }
+
+             // Combine allowed formats for images and videos
+            const allowedFormats = ['jpg', 'jpeg', 'png', 'gif', 'mp4', 'avi', 'mov'];
+
+            // Check if all files are images or videos
+            const validateFiles = (files, allowedFormats) => {
+                for (let file of files) {
+                    let fileExtension = file.split('.').pop();
+                    if (!allowedFormats.includes(fileExtension)) {
+                        return false;
+                    }
+                }
+                return true;
+            };
+
+            if (!validateFiles(images.concat(videos), allowedFormats)) {
+                return res.status(400).send({ status: false, message: "Only images and videos are allowed." });
+            }
             data.images = images;
             data.videos = videos;      
 
@@ -55,35 +77,6 @@ const suggestions = async (req, res) => {
         return res.status(500).send({ status: false, message: err.message });
     }
 };
-
-// const suggestedUserIds = [];
-
-// const suggestions = async (req, res) => {
-//     try {
-//         const totalNumberOfUsers = await userModel.countDocuments(); // Get the total number of users
-        
-//         let suggestionsUserProfile = await userModel.aggregate([
-//             { $match: { _id: { $nin: suggestedUserIds } } }, // Exclude previously suggested users
-//             { $sample: { size: 2 } },
-//             { $project: { name: 1, userName: 1 } } // Projection to include only 'name' and 'userName'
-//         ]);
-        
-//         if (suggestionsUserProfile.length === 0) {
-//             return res.status(404).send({ status: false, message: "No user profile for suggestions" });
-//         }
-        
-//         suggestedUserIds.push(suggestionsUserProfile[0]._id); // Add the suggested user's ID to the list
-        
-//         // If all users have been suggested, reset the list to suggest from the beginning
-//         if (suggestedUserIds.length === totalNumberOfUsers) {
-//             suggestedUserIds = [];
-//         }
-        
-//         return res.status(200).send({ status: true, message: "Suggestions", suggestions: suggestionsUserProfile });
-//     } catch (err) {
-//         return res.status(500).send({ status: false, message: err.message });
-//     }
-// };
  
 const getAllPost = async (req, res) => { 
     try {
