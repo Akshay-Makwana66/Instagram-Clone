@@ -110,7 +110,7 @@ const editProfile = async (req, res) => {
                 from: process.env.USER,
                 to: updateProfile.emailId,
                 subject: 'verify your mail',
-                html: '<p>Hello '+updateProfile.name+', please click here to <a href="http://localhost:4000/verify?id='+updateProfile._id +'" style="background-color: #007fff; display: inline-block; padding: 2px; color: white; text-decoration: none;"><span style="font-size: 15px;">verify</span></a> your emailId.</p>'
+                html: '<p>Hello '+updateProfile.name+', please click here to <a href="https://instabharat.onrender.com/verify?id='+updateProfile._id +'" style="background-color: #007fff; display: inline-block; padding: 2px; color: white; text-decoration: none;"><span style="font-size: 15px;">verify</span></a> your emailId.</p>'
             };
             transporter.sendMail(mailOptions, (err, info) => {
                 if (err) {

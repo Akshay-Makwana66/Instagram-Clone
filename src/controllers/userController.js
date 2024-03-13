@@ -44,7 +44,7 @@ const userRegistration = async (req, res) => {
             from: process.env.USER,
             to: savedData.emailId,
             subject: 'Verify your emailId',
-            html: '<p>Hello ' + name + ', please click <a href="http://localhost:4000/verify?id=' + savedData._id + '" style="background-color: #007fff; display: inline-block; padding: 2px; color: white; text-decoration: none;"><span style="font-size: 15px;">here</span></a> to verify your emailId.</p>'
+            html: '<p>Hello ' + name + ', please click <a href="https://instabharat.onrender.com/verify?id=' + savedData._id + '" style="background-color: #007fff; display: inline-block; padding: 2px; color: white; text-decoration: none;"><span style="font-size: 15px;">here</span></a> to verify your emailId.</p>'
         };
         transporter.sendMail(mailOptions, (err, info) => {
             if (err) {
