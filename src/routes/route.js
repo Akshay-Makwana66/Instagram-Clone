@@ -28,7 +28,7 @@ const {sharedPost,removeSharedPost} = require("../controllers/sharedPost.js");
 const {postStories, viewStories,viewer,deleteStories} = require("../controllers/postStoriesController.js");
 
 //User  Api's----------------4
-router.post("/registration",upload.fields([{ name: 'profileImage', maxCount: 5 }]),registrationValidations,userRegistration);
+router.post("/",upload.fields([{ name: 'profileImage', maxCount: 5 }]),registrationValidations,userRegistration);
 router.get("/verify",verifyEmail);  
 router.post("/login",userLogin);  
 router.patch("/forget-password",forgetPassword);  

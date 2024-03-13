@@ -8,9 +8,7 @@ const mongodb_string = process.env.MONGO_URL || ""
 app.use(express.json());
 
 
-mongoose.connect(mongodb_string,{  
-    useNewUrlParser:true
-}).then(()=>{console.log("mongodb is connected");
+mongoose.connect(mongodb_string).then(()=>{console.log("mongodb is connected");
 }).catch((err)=>{console.log(err)})
 
 
